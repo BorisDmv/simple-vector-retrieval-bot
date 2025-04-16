@@ -3,25 +3,24 @@ import csv
 import gensim.downloader as api
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import TreebankWordTokenizer
 
-# Initialize the Flask app
+# Initialize Flask app
 app = Flask(__name__)
 
 # Load Word2Vec model
+print("Loading Word2Vec model (this may take some time)...")
 word_model = api.load("word2vec-google-news-300")
+print("Word2Vec model loaded!")
+
 tokenizer = TreebankWordTokenizer()
 
-# Preprocess function
+# Preprocessing function
 def preprocess(text):
     text = text.lower()
     tokens = tokenizer.tokenize(text)
     return [token for token in tokens if token.isalnum() and token in word_model.key_to_index]
-
-# Get text embedding function
-def get_text_embedding(text_tokens, model):
-    embeddings = [model[token] for token in text_tokens if token in model.key_to_index]
-    return np.mean(embeddings, axis=0) if embeddings else np.zeros(model.vector_size)
 
 # Load Q&A pairs from CSV
 def load_qa_pairs(csv_path):
@@ -34,21 +33,40 @@ def load_qa_pairs(csv_path):
             answers.append(row['answer'])
     return questions, answers
 
-csv_file_path = "scanlab_training_data.csv"  # Adjust this if your CSV is elsewhere
+csv_file_path = "scanlab_training_data.csv"
 training_questions, training_answers = load_qa_pairs(csv_file_path)
 
-# Preprocess and embed training questions
-processed_questions = [preprocess(q) for q in training_questions]
-question_embeddings = np.array([get_text_embedding(tokens, word_model) for tokens in processed_questions])
+# Fit TF-IDF on training questions
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_vectorizer.fit(training_questions)
+
+# Get TF-IDF weighted text embedding
+def get_weighted_embedding(text, model, tfidf_vectorizer):
+    tokens = preprocess(text)
+    if not tokens:
+        return np.zeros(model.vector_size)
+
+    tfidf_weights = tfidf_vectorizer.transform([text]).toarray()[0]
+    vocab = tfidf_vectorizer.get_feature_names_out()
+    word_weights = {vocab[i]: tfidf_weights[i] for i in range(len(vocab))}
+
+    vectors = []
+    for word in tokens:
+        if word in model.key_to_index:
+            weight = word_weights.get(word, 0.0)
+            vectors.append(model[word] * weight)
+
+    return np.mean(vectors, axis=0) if vectors else np.zeros(model.vector_size)
+
+# Precompute embeddings for training questions
+question_embeddings = np.array([
+    get_weighted_embedding(q, word_model, tfidf_vectorizer)
+    for q in training_questions
+])
 
 # Chatbot response function
-def respond(user_input, questions, answers, question_embeddings, word_model, similarity_threshold=0.8):
-    processed_input = preprocess(user_input)
-
-    if not processed_input:
-        return "Please say something meaningful."
-
-    input_embedding = get_text_embedding(processed_input, word_model)
+def respond(user_input, questions, answers, question_embeddings, word_model, tfidf_vectorizer, similarity_threshold=0.6):
+    input_embedding = get_weighted_embedding(user_input, word_model, tfidf_vectorizer)
 
     if np.all(input_embedding == 0):
         return "Sorry, I don't understand the words you used."
@@ -62,16 +80,16 @@ def respond(user_input, questions, answers, question_embeddings, word_model, sim
     else:
         return "Sorry, I'm not sure how to respond to that."
 
-# API route to handle chat
+# Flask route
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get('user_input')
     if not user_input:
         return jsonify({"response": "No input provided"}), 400
-    
-    response = respond(user_input, training_questions, training_answers, question_embeddings, word_model)
+
+    response = respond(user_input, training_questions, training_answers, question_embeddings, word_model, tfidf_vectorizer)
     return jsonify({"response": response})
 
-# Start the Flask server
+# Run server
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)

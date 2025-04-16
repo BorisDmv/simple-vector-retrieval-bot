@@ -1,2 +1,35 @@
 question,answer
-What is the meaning of the blue indication of my monitor?,That means the monitor is running properly
+What is Scanlab?,Scanlab is a platform that monitors your websites and services to ensure they're online and working.
+What does Scanlab do?,Scanlab scans the monitors you add and alerts you if anything goes wrong.
+How does Scanlab work?,Scanlab continuously checks your websites or services and notifies you when there’s downtime or issues.
+What types of scanning does Scanlab support?,"Scanlab supports HTTP(S) scanning, port scanning, keyword scanning, and SSL monitoring."
+What is HTTP scanning?,HTTP scanning checks if your website or web service is reachable and responding properly.
+What is port scanning?,Port scanning checks if a specific port on a server is open and reachable.
+What is keyword scanning?,Keyword scanning lets you track specific words or phrases in your monitored web pages.
+What is SSL monitoring?,SSL monitoring checks the status and expiration date of SSL certificates for your monitored sites.
+What does SSL monitoring mean in Scanlab?,SSL monitoring in Scanlab alerts you if your site’s certificate is invalid or near expiration.
+Is SSL monitoring included in Scanlab?,"Yes, SSL monitoring is one of the core features included in Scanlab."
+Can I use webhooks with Scanlab?,"Yes, paid users can add custom webhooks to get notified through services like Discord."
+How do webhooks work on Scanlab?,Webhooks let Scanlab send notifications to other apps or services when a monitor changes status.
+Are webhooks available for free users?,Free users only have access to email notifications and have limited webhook support.
+What’s the difference between free and paid users?,Free users have limited webhook access and longer scan intervals than paid users.
+How often do scans happen for free users?,Free users get scans less frequently than paid users and can't use advanced webhook options.
+Can I get notified by something other than email?,Yes! Paid users can use Discord bots or other webhook integrations.
+Does Scanlab support Discord bots?,"Yes, Scanlab supports Discord bots for paid users."
+What is the default notification method in Scanlab?,"By default, Scanlab sends you alerts by email when something changes."
+Does Scanlab have a mobile app?,We are currently working on a native mobile app. Stay tuned!
+Can I use Scanlab on my phone?,A native mobile app is planned for the future.
+Is there a mobile app for Scanlab?,"We're planning to release a mobile app soon, it's in our roadmap."
+What is the pricing for Scanlab?,"For pricing details, please visit our /pricing page on the website."
+How much does Scanlab cost?,Scanlab offers various plans. Visit the /pricing page to see what fits your needs.
+Where can I find Scanlab pricing?,You can find all pricing options at scanlab.com/pricing.
+How do I cancel my Scanlab plan?,You can cancel your plan anytime from your account dashboard.
+How to unsubscribe from Scanlab?,"To cancel your subscription, go to your dashboard and manage your billing settings."
+How do I stop using Scanlab’s paid plan?,Visit your account settings to stop a paid plan or switch to free mode.
+What do the colors on the dashboard mean?,"Blue means the monitor is working properly, red means it is down, and orange means it is paused."
+What does the blue circle mean on the dashboard?,The blue circle indicates that the monitor is working properly after the last scan.
+What does the red circle mean on the dashboard?,The red circle means that the monitor is currently down or unreachable.
+What does the orange circle mean on the dashboard?,The orange circle shows that the monitor is paused and currently not being scanned.
+What color shows the monitor is healthy?,The blue color shows that the monitor is healthy and everything is functioning as expected.
+What color means my website is down?,The red color indicates that your website or service is down.
+What color appears when I pause a monitor?,"If you pause a monitor, it will appear as orange on your dashboard."

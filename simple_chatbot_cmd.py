@@ -2,7 +2,9 @@ import csv
 import gensim.downloader as api
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import TreebankWordTokenizer
+
 
 # --- Load Word2Vec Model ---
 print("Loading Word2Vec model (this may take some time)...")
@@ -21,11 +23,6 @@ def preprocess(text):
     tokens = tokenizer.tokenize(text)
     return [token for token in tokens if token.isalnum() and token in word_model.key_to_index]
 
-# --- Get Text Embedding Function ---
-def get_text_embedding(text_tokens, model):
-    embeddings = [model[token] for token in text_tokens if token in model.key_to_index]
-    return np.mean(embeddings, axis=0) if embeddings else np.zeros(model.vector_size)
-
 # --- Load Questions and Answers from CSV ---
 def load_qa_pairs(csv_path):
     questions = []
@@ -37,23 +34,42 @@ def load_qa_pairs(csv_path):
             answers.append(row['answer'])
     return questions, answers
 
-csv_file_path = "scanlab_training_data.csv"  # Adjust this if your CSV is elsewhere
+csv_file_path = "scanlab_training_data.csv"  # Adjust if needed
 print("Loading training data from CSV...")
 training_questions, training_answers = load_qa_pairs(csv_file_path)
 
-# Preprocess and embed training questions
-processed_questions = [preprocess(q) for q in training_questions]
-question_embeddings = np.array([get_text_embedding(tokens, word_model) for tokens in processed_questions])
+# --- TF-IDF Setup ---
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_vectorizer.fit(training_questions)
+
+# --- Weighted Text Embedding using TF-IDF ---
+def get_weighted_embedding(text, model, tfidf_vectorizer):
+    tokens = preprocess(text)
+    if not tokens:
+        return np.zeros(model.vector_size)
+
+    tfidf_weights = tfidf_vectorizer.transform([text]).toarray()[0]
+    vocab = tfidf_vectorizer.get_feature_names_out()
+    word_weights = {vocab[i]: tfidf_weights[i] for i in range(len(vocab))}
+
+    vectors = []
+    for word in tokens:
+        if word in model.key_to_index:
+            weight = word_weights.get(word, 0.0)
+            vectors.append(model[word] * weight)
+
+    return np.mean(vectors, axis=0) if vectors else np.zeros(model.vector_size)
+
+# Precompute weighted embeddings for training questions
+question_embeddings = np.array([
+    get_weighted_embedding(q, word_model, tfidf_vectorizer)
+    for q in training_questions
+])
 print(f"Loaded and processed {len(training_questions)} Q&A pairs.")
 
 # --- Respond Function ---
-def respond(user_input, questions, answers, question_embeddings, word_model, similarity_threshold=0.8):
-    processed_input = preprocess(user_input)
-
-    if not processed_input:
-        return "Please say something meaningful."
-
-    input_embedding = get_text_embedding(processed_input, word_model)
+def respond(user_input, questions, answers, question_embeddings, word_model, tfidf_vectorizer, similarity_threshold=0.6):
+    input_embedding = get_weighted_embedding(user_input, word_model, tfidf_vectorizer)
 
     if np.all(input_embedding == 0):
         return "Sorry, I don't understand the words you used."
@@ -69,10 +85,10 @@ def respond(user_input, questions, answers, question_embeddings, word_model, sim
 
 # --- Chat Loop ---
 if __name__ == "__main__":
-    print("\nSimple Chatbot is running. Type 'quit' to exit.")
+    print("\n🧠 Semantic Chatbot is running. Type 'quit' to exit.")
     while True:
         user_input = input("You: ")
         if user_input.lower() == 'quit':
             break
-        response = respond(user_input, training_questions, training_answers, question_embeddings, word_model)
+        response = respond(user_input, training_questions, training_answers, question_embeddings, word_model, tfidf_vectorizer)
         print("Bot:", response)

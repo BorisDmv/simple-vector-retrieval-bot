@@ -21,21 +21,28 @@ This project is a simple semantic retrieval-based chatbot that uses word embeddi
 ## Installation
 
 1. Clone this repository:
-    ```bash
-    git clone https://github.com/BorisDmv/simple-vector-retrieval-bot.git
-    cd simple-vector-retrieval-bot
-    ```
+
+   ```bash
+   git clone https://github.com/BorisDmv/simple-vector-retrieval-bot.git
+   cd simple-vector-retrieval-bot
+   ```
 
 2. Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   This is if you installed on homebrew on macos:
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
 
 3. Download the pre-trained **Word2Vec** model. The code uses the **Google News 300** model, but you can choose any other pre-trained model if needed:
-    ```bash
-    import gensim.downloader as api
-    word_model = api.load("word2vec-google-news-300")
-    ```
+   ```bash
+   import gensim.downloader as api
+   word_model = api.load("word2vec-google-news-300")
+   ```
 
 ## How It Works
 
@@ -50,7 +57,6 @@ The chatbot works by embedding both the user input and pre-defined questions int
 
 If the similarity score is below a defined threshold, the bot will reply with:
 
-
 ## API
 
 The chatbot exposes a simple API that can be interacted with through POST requests.
@@ -58,6 +64,7 @@ The chatbot exposes a simple API that can be interacted with through POST reques
 ### POST `/chat`
 
 #### Request
+
 ```json
 {
   "user_input": "user's question"
@@ -69,5 +76,6 @@ Response
   "response": "The bot's answer"
 }
 
-curl -X POST -H "Content-Type: application/json" -d '{"mesuser_inputsage": "Hello"}' http://localhost:5000/chat
+curl -X POST -H "Content-Type: application/json" -d '{"user_input": "Hello"}' http://localhost:5000/chat
 
+```
