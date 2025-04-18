@@ -9,7 +9,10 @@ from nltk.tokenize import TreebankWordTokenizer
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/chat": {"origins": "https://localhost:8080"}})
+
+#CORS(app)
+CORS(app, resources={r"/chat": {"origins": "http://localhost:8080"}})
+#CORS(app, resources={r"/chat": {"origins": "localhost:8080"}})
 
 # Load Word2Vec model
 print("Loading Word2Vec model (this may take some time)...")
@@ -93,5 +96,7 @@ def chat():
     return jsonify({"response": response})
 
 # Run server
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=9090)
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=9090)
+    app.run(host='0.0.0.0', port=9090, ssl_context=('cert.pem', 'key.pem'))
