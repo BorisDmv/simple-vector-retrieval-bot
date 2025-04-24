@@ -33,3 +33,36 @@ What does the orange circle mean on the dashboard?,The orange circle shows that 
 What color shows the monitor is healthy?,The blue color shows that the monitor is healthy and everything is functioning as expected.
 What color means my website is down?,The red color indicates that your website or service is down.
 What color appears when I pause a monitor?,"If you pause a monitor, it will appear as orange on your dashboard."
+How do I add a monitor in Scanlab?,"To add a monitor, go to your dashboard and click on “Add Monitor” then fill in the required fields."
+Can I monitor multiple websites with Scanlab?,"Yes, you can monitor multiple websites depending on your plan."
+Does Scanlab check for SSL expiration?,"Yes, Scanlab automatically checks your SSL certificates and notifies you before they expire."
+What happens when my website goes down?,Scanlab will alert you via email or webhook as soon as it detects downtime.
+Can I pause a monitor in Scanlab?,"Yes, you can pause any monitor from your dashboard and resume it whenever you like."
+Does pausing a monitor stop notifications?,"Yes, when a monitor is paused, Scanlab stops scanning it and you won’t receive alerts."
+Can I choose how often Scanlab scans my site?,Scan intervals depend on your plan. Paid users can set shorter intervals.
+Is Scanlab good for small businesses?,Absolutely! Scanlab is designed to be lightweight and effective for both small and large teams.
+Do I need to install anything to use Scanlab?,No installation needed—Scanlab runs in the cloud and works through your browser.
+Is Scanlab easy to use?,Yes! Scanlab has a simple and user-friendly dashboard that makes it easy to manage all your monitors.
+Can I monitor APIs with Scanlab?,"Yes, Scanlab can monitor APIs through HTTP/HTTPS checks."
+What happens if my SSL certificate expires?,Scanlab will notify you before expiration so you can renew it in time.
+What is a monitor in Scanlab?,A monitor is a service or website you want Scanlab to check for uptime and health.
+Can I delete a monitor?,"Yes, you can delete a monitor at any time from your dashboard."
+What’s the maximum number of monitors I can add?,It depends on your plan. Paid plans allow more monitors than the free tier.
+Do I need to verify ownership of websites?,"No, Scanlab doesn’t require verification—you just need the URL to start monitoring."
+Is Scanlab available worldwide?,"Yes, Scanlab can be used from anywhere in the world."
+Does Scanlab work for intranet or private networks?,"No, Scanlab only works for publicly accessible IPs or URLs."
+Can I see the scan history?,"Yes, Scanlab provides scan history and logs so you can track uptime over time."
+Does Scanlab support notifications via SMS?,"Currently, Scanlab does not support SMS, but webhook integrations can connect to third-party SMS services."
+Can I set different alert levels?,Scanlab lets you configure basic alert thresholds. Advanced alerting is coming soon.
+Can I monitor a server IP directly?,"Yes, you can add an IP address and select port scanning to monitor server availability."
+What is a scanning interval?,The scanning interval is how often Scanlab checks the status of your monitor.
+Can I change the scanning interval?,Paid users can set their preferred scanning interval per monitor.
+How do I upgrade my plan?,You can upgrade your plan anytime from your account settings or the pricing page.
+Does Scanlab offer a trial?,"We’re working on a trial option. Right now, you can start with the free plan to explore features."
+How do I contact Scanlab support?,You can reach out to us at support@scanlab.site or use the in-app help feature.
+What are the available plans for Scanlab?,"Scanlab offers both free and paid plans, with paid options unlocking faster scans, more monitors, and webhook integrations."
+What subscription plans does Scanlab offer?,Scanlab provides a free plan and multiple paid plans depending on your needs. Check the /pricing page for details.
+What is included in the free plan?,"The free plan includes basic monitoring, email alerts, and limited scan frequency and webhook options."
+What features do paid plans unlock?,"Paid plans allow for faster scan intervals, more monitors, Discord/webhook integrations, and upcoming premium features."
+How do I compare Scanlab plans?,Visit scanlab.com/pricing to compare features between free and paid plans.
+Can I upgrade my Scanlab plan later?,"Yes, you can upgrade anytime from your dashboard or pricing page."
