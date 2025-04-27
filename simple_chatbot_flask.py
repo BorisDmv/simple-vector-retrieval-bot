@@ -95,8 +95,10 @@ def chat():
     response = respond(user_input, training_questions, training_answers, question_embeddings, word_model, tfidf_vectorizer)
     return jsonify({"response": response})
 
-# Run server
+# Run server 
 # if __name__ == "__main__":
 #     app.run(host='0.0.0.0', port=9090)
+
+## SSL Configuration only for local testing
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=9090, ssl_context=('cert.pem', 'key.pem'))

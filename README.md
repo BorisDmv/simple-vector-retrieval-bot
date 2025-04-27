@@ -44,6 +44,12 @@ This project is a simple semantic retrieval-based chatbot that uses word embeddi
    word_model = api.load("word2vec-google-news-300")
    ```
 
+4. If you want to test in development and add testing certificate for https just use this to generate it
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+```
+
 ## How It Works
 
 The chatbot works by embedding both the user input and pre-defined questions into vector space using **Word2Vec** embeddings. Then it calculates the cosine similarity between the user's input vector and each question vector. The question with the highest similarity score is selected, and its corresponding answer is returned.
